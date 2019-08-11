@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useContext } from 'react';
 import './App.css';
+import PlayerDisplay from './components/PlayerDisplay';
+import Button from './components/Button';
 
-function App() {
+import Board from './components/Board';
+import { Context } from './Context';
+
+const App = () => {
+  const { state } = useContext(Context);
+  const { nextBtn } = state;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <h1>Hello</h1>
+      <PlayerDisplay />
+      <Board />
+      <Button isDisable={nextBtn ? false : true} />
     </div>
   );
-}
+};
 
 export default App;
