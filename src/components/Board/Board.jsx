@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { Context } from '../Context';
+import { Context } from '../../Context';
 import classes from './board.module.css';
 
 const Board = () => {

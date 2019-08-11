@@ -7,4 +7,6 @@
   font-size: 16px;
   outline: none;
   cursor: pointer;
+  color: darkblue;
+  display: inline-block;
 }

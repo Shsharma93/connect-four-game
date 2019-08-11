@@ -1,0 +1,27 @@
+.playerBox {
+  display: inline-block;
+  margin: 10px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
+.win {
+  display: inline-block;
+  width: 200px;
+  margin: 10px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.p1 {
+  background-color: goldenrod;
+}
+
+.p2 {
+  background-color: green;
+}

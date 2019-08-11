@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import checkWinner from './utils/checkWinner';
 
 export const Context = React.createContext();
 
@@ -14,17 +15,39 @@ export class Provider extends Component {
     markBox: [],
     gamePause: false,
     nextBtn: false,
+    winner: undefined,
+    startNewGame: () => {
+      this.setState({
+        rows: '',
+        isSetRow: true,
+        isGameActive: false,
+        markBox: [],
+        gamePause: false,
+        nextBtn: false,
+        winner: undefined
+      });
+    },
     setRows: rows => {
       this.setState({ rows, isSetRow: false });
     },
     nextTurn: () => {
       const { players, activePlayer } = this.state;
+
+      const result = this.checkWinGame();
+      if (result) {
+        this.setState({ gamePause: false, nextBtn: false });
+        return;
+      }
+
       const nextPlayer = players.filter(player => player.name !== activePlayer);
       this.setState({
         activePlayer: nextPlayer[0].name,
         gamePause: true,
         nextBtn: false
       });
+    },
+    setGameActive: () => {
+      this.setState({ isGameActive: false });
     },
     clickCellHandler: (y, x) => {
       const { rows, markBox, activePlayer, cellY } = this.state;
@@ -34,8 +57,6 @@ export class Provider extends Component {
         return el.coordinates.x === x;
       });
 
-      let gameStatus = this.winGame();
-      console.log(`Winner ${gameStatus}`);
       let newY = null;
 
       if (currentColumn.length > 0) {
@@ -65,13 +86,10 @@ export class Provider extends Component {
         gamePause: false,
         nextBtn: true
       });
-    },
-    setGameActive: () => {
-      this.setState({ isGameActive: false });
     }
   };
 
-  winGame = () => {
+  checkWinGame = () => {
     const { markBox, cellX, cellY } = this.state;
 
     let board = [];
@@ -94,41 +112,9 @@ export class Provider extends Component {
       }
     }
 
-    //check vertical
-
-    for (let y = 3; y < 6; y++) {
-      for (let x = 0; x < 7; x++) {
-        if (board[y][x]) {
-          if (
-            board[y][x] === board[y - 1][x] &&
-            board[y][x] === board[y - 2][x] &&
-            board[y][x] === board[y - 3][x]
-          ) {
-            return board[y][x];
-          }
-        }
-      }
-    }
-
-    //check vertically
-
-    for (let y = 0; y < 6; y++) {
-      for (let x = 0; x < 4; x++) {
-        if (board[y][x]) {
-          if (
-            board[y][x] === board[y][x+1] &&
-            board[y][x] === board[y][x+2] &&
-            board[y][x] === board[y][x+3]
-          ) {
-            return board[y][x];
-          }
-        }
-      }
-    }
-
-
-    
-
+    const winner = checkWinner(board);
+    this.setState({ board, winner });
+    return winner;
   };
 
   render() {
